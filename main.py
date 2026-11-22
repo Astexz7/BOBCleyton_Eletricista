@@ -12,7 +12,9 @@ rodando = True
 while rodando:  #loop para manter o jogo rodando
     for evento in pygame.event.get():    #aqui guarda tudo que o usuário fizer dentro do jogo
         if evento.type == pygame.QUIT:  #mostra qual o tipo do evento acontecido (que é o de sair do jogo)
-                rodando = False     #desliga o loop
+            rodando = False     #desliga o loop
+    teclas = pygame.key.get_pressed()   #aqui vai ser guardado todos os comandos do teclado
+    bob.mover(teclas)   #chamando o metodo mover a bob
     tela.fill((52, 235, 94))    #apaga os rastros anteriores e pinta o fundo
     bob.desenhar(tela)  #bob vai ser desenhado dentro do game
     vilao.desenhar(tela)    #vilao vai ser desenhado dentro do game 
