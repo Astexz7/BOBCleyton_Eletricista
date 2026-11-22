@@ -14,3 +14,12 @@ class Heroi(Personagem):
             self.y += self.velocidade
         if teclas[pygame.K_UP] or teclas[pygame.K_w]:         #sobe
             self.y -= self.velocidade
+
+        if self.x > 800 - self.largura:     
+            self.x = 800 - self.largura
+        if self.x < 0:
+            self.x = 0
+        if self.y > 600 - self.altura:
+            self.y = 600 - self.altura
+        if self.y < 0:
+            self.y = 0
