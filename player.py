@@ -15,11 +15,11 @@ class Heroi(Personagem):
         if teclas[pygame.K_UP] or teclas[pygame.K_w]:         #sobe
             self.y -= self.velocidade
 
-        if self.x > 800 - self.largura:     
+        if self.x > 800 - self.largura:     #limite tela direita
             self.x = 800 - self.largura
-        if self.x < 0:
+        if self.x < 0:      #limite tela esquerda
             self.x = 0
-        if self.y > 600 - self.altura:
+        if self.y > 600 - self.altura:      #limite tela baixo
             self.y = 600 - self.altura
-        if self.y < 0:
+        if self.y < 0:      #limite tela cima
             self.y = 0
