@@ -13,26 +13,34 @@ img_aluno = pygame.image.load("aluno.png").convert_alpha()
 img_aluno = pygame.transform.scale(img_aluno, (40, 40))
 img_menu = pygame.image.load('menu.png').convert()
 img_menu = pygame.transform.scale(img_menu, (800, 600))
+img_mapa = pygame.image.load('mapa.png').convert()
+img_mapa = pygame.transform.scale(img_mapa, (800, 600))
 relogio = pygame.time.Clock()    #cria um relógio para determinar os frame/segundo
 
 #LISTA com os 3 geradores (um por departamento). "geradores" (plural) é a lista inteira
-geradores = [Gerador(50, 50, 40, 40), Gerador(700, 50, 40, 40), Gerador(375, 500, 40, 40)]
-
+geradores = [Gerador(50, 50, 40, 40), Gerador(700, 50, 40, 40), Gerador(50, 400, 40, 40)]
 bob = Heroi(100, 100, 40, 40, 100, 3, 'BOBCleyton', (0,0,255))    #objeto com a classe herói
 vilao = Inimigo(600, 400, 40, 40, 100, 1, 'Aluno', (255,0,0))    #objeto com a classe vilão
+
 fonte = pygame.font.Font(None, 72)
+fonte_titulo = pygame.font.Font(None, 80)
+fonte_botoes = pygame.font.Font(None, 50)
+fonte_botoes_fase = pygame.font.Font(None, 40)
+
 texto_derrota = fonte.render("GAME OVER", True, (255, 0, 111))
 texto_vitoria = fonte.render("VICTORY", True, (0, 255, 204))
-fonte_titulo = pygame.font.Font(None, 80)
 texto_titulo = fonte_titulo.render("BOBCleyton O Eletricista", True, (255, 255, 0))
+texto_jogar = fonte_botoes.render('JOGAR', True, (0, 0, 0))
+texto_sair = fonte_botoes.render('SAIR', True, (0,0,0))
+texto_fase1 = fonte_botoes_fase.render('FASE 1', True, (0,0,0))
+texto_fase2 = fonte_botoes_fase.render('FASE 2', True, (0,0,0))
+texto_fase3 = fonte_botoes_fase.render('FASE 3', True, (0,0,0))
 
 botao_jogar = pygame.Rect(290, 280, 220, 50)
 botao_sair = pygame.Rect(290, 355, 220, 50)
-
-fonte_botoes = pygame.font.Font(None, 50)
-texto_jogar = fonte_botoes.render('JOGAR', True, (0, 0, 0))
-texto_sair = fonte_botoes.render('SAIR', True, (0,0,0))
-
+botao_fase1 = pygame.Rect(100, 200, 150, 150)
+botao_fase2 = pygame.Rect(325, 200, 150, 150)
+botao_fase3 = pygame.Rect(550, 200, 150, 150)
 
 estado = 'menu'
 rodando = True
@@ -48,16 +56,28 @@ while rodando:    #loop para manter o jogo rodando
         tela.blit(texto_jogar, (botao_jogar.x + (botao_jogar.width - texto_jogar.get_width()) / 2, botao_jogar.y + (botao_jogar.height - texto_jogar.get_height()) / 2 + 5))
         tela.blit(texto_sair, (botao_sair.x + (botao_sair.width - texto_sair.get_width()) / 2, botao_sair.y + (botao_sair.height - texto_sair.get_height()) / 2 + 5))
 
+    if estado == 'fases':
+        tela.blit(img_menu, (0, 0))
+        pygame.draw.rect(tela, (255, 212, 20), botao_fase1)    #liberada
+        pygame.draw.rect(tela, (120, 120, 120), botao_fase2)   #bloqueada
+        pygame.draw.rect(tela, (120, 120, 120), botao_fase3)   #bloqueada
+        tela.blit(texto_fase1, (botao_fase1.x + (botao_fase1.width - texto_fase1.get_width()) / 2, botao_fase1.y + (botao_fase1.height - texto_fase1.get_height()) / 2))
+        tela.blit(texto_fase2, (botao_fase2.x + (botao_fase2.width - texto_fase2.get_width()) / 2, botao_fase2.y + (botao_fase2.height - texto_fase2.get_height()) / 2))
+        tela.blit(texto_fase3, (botao_fase3.x + (botao_fase3.width - texto_fase3.get_width()) / 2, botao_fase3.y + (botao_fase3.height - texto_fase3.get_height()) / 2))
+
     for evento in pygame.event.get():    #aqui guarda tudo que o usuário fizer dentro do jogo
         if evento.type == pygame.QUIT:    #mostra qual o tipo do evento acontecido (que é o de sair do jogo)
             rodando = False     #desliga o loop
         if evento.type == pygame.MOUSEBUTTONDOWN:
-            if botao_jogar.collidepoint(evento.pos):
-                estado = 'jogo'
-        if evento.type == pygame.MOUSEBUTTONDOWN:
-            if botao_sair.collidepoint(evento.pos):
-                rodando = False
-            
+            if estado == 'menu':
+                if botao_jogar.collidepoint(evento.pos):
+                    estado = 'fases'
+                elif botao_sair.collidepoint(evento.pos):
+                    rodando = False
+            elif estado == 'fases':
+                if botao_fase1.collidepoint(evento.pos):
+                    estado = 'jogo'
+
     teclas = pygame.key.get_pressed()    #aqui vai ser guardado todos os comandos do teclado
     if estado == 'jogo':
         if not game_over and not victory:
@@ -79,7 +99,7 @@ while rodando:    #loop para manter o jogo rodando
             if todos_consertados:                 #só chega aqui se nenhum estava quebrado
                 victory = True
 
-        tela.fill((88, 235, 52))    #apaga os rastros anteriores e pinta o fundo
+        tela.blit(img_mapa, (0, 0))    #apaga os rastros anteriores e pinta o fundo
 
         #DESENHO: desenha cada um dos 3 geradores (imagem quebrado ou ligado, escolhida dentro da classe)
         for gerador in geradores:
