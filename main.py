@@ -25,10 +25,13 @@ texto_derrota = fonte.render("GAME OVER", True, (255, 0, 111))
 texto_vitoria = fonte.render("VICTORY", True, (0, 255, 204))
 fonte_titulo = pygame.font.Font(None, 80)
 texto_titulo = fonte_titulo.render("BOBCleyton O Eletricista", True, (255, 255, 0))
+
 botao_jogar = pygame.Rect(290, 280, 220, 50)
+botao_sair = pygame.Rect(290, 355, 220, 50)
 
 fonte_botoes = pygame.font.Font(None, 50)
-texto_jogar = fonte_titulo.render('JOGAR', True, (255, 255, 255))
+texto_jogar = fonte_botoes.render('JOGAR', True, (0, 0, 0))
+texto_sair = fonte_botoes.render('SAIR', True, (0,0,0))
 
 
 estado = 'menu'
@@ -41,17 +44,22 @@ while rodando:    #loop para manter o jogo rodando
         tela.blit(img_menu, (0, 0))
         tela.blit(texto_titulo, ((800 - texto_titulo.get_width()) / 2, 60))
         pygame.draw.rect(tela, (255, 212, 20), botao_jogar)
+        pygame.draw.rect(tela, (255, 212, 20), botao_sair)
         tela.blit(texto_jogar, (botao_jogar.x + (botao_jogar.width - texto_jogar.get_width()) / 2, botao_jogar.y + (botao_jogar.height - texto_jogar.get_height()) / 2 + 5))
-        
+        tela.blit(texto_sair, (botao_sair.x + (botao_sair.width - texto_sair.get_width()) / 2, botao_sair.y + (botao_sair.height - texto_sair.get_height()) / 2 + 5))
+
     for evento in pygame.event.get():    #aqui guarda tudo que o usuário fizer dentro do jogo
         if evento.type == pygame.QUIT:    #mostra qual o tipo do evento acontecido (que é o de sair do jogo)
             rodando = False     #desliga o loop
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if botao_jogar.collidepoint(evento.pos):
-                estado = 'jogar'
+                estado = 'jogo'
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            if botao_sair.collidepoint(evento.pos):
+                rodando = False
             
     teclas = pygame.key.get_pressed()    #aqui vai ser guardado todos os comandos do teclado
-    if estado == 'jogar':
+    if estado == 'jogo':
         if not game_over and not victory:
             vilao.perseguir(bob)    #envoca o metodo perseguir e chama bob como argumento
             bob.mover(teclas)    #chamando o metodo mover a bob
