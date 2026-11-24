@@ -13,7 +13,6 @@ img_aluno = pygame.image.load("aluno.png").convert_alpha()
 img_aluno = pygame.transform.scale(img_aluno, (40, 40))
 img_menu = pygame.image.load('menu.png').convert()
 img_menu = pygame.transform.scale(img_menu, (800, 600))
-
 relogio = pygame.time.Clock()    #cria um relógio para determinar os frame/segundo
 
 #LISTA com os 3 geradores (um por departamento). "geradores" (plural) é a lista inteira
@@ -26,23 +25,29 @@ texto_derrota = fonte.render("GAME OVER", True, (255, 0, 111))
 texto_vitoria = fonte.render("VICTORY", True, (0, 255, 204))
 fonte_titulo = pygame.font.Font(None, 80)
 texto_titulo = fonte_titulo.render("BOBCleyton O Eletricista", True, (255, 255, 0))
-botao_jogar = pygame.Rect(300, 277, 200, 60)
+botao_jogar = pygame.Rect(285, 277, 230, 60)
 
 
 estado = 'menu'
 rodando = True
 game_over = False
 victory = False
+
 while rodando:    #loop para manter o jogo rodando
     if estado == "menu":
         tela.blit(img_menu, (0, 0))
         tela.blit(texto_titulo, ((800 - texto_titulo.get_width()) / 2, 60))
         pygame.draw.rect(tela, (255, 255, 255), botao_jogar)
+        
     for evento in pygame.event.get():    #aqui guarda tudo que o usuário fizer dentro do jogo
         if evento.type == pygame.QUIT:    #mostra qual o tipo do evento acontecido (que é o de sair do jogo)
             rodando = False     #desliga o loop
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            if botao_jogar.collidepoint(evento.pos):
+                estado = 'jogar'
+            
     teclas = pygame.key.get_pressed()    #aqui vai ser guardado todos os comandos do teclado
-    if estado == 'jogo':
+    if estado == 'jogar':
         if not game_over and not victory:
             vilao.perseguir(bob)    #envoca o metodo perseguir e chama bob como argumento
             bob.mover(teclas)    #chamando o metodo mover a bob
