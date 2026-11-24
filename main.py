@@ -25,7 +25,10 @@ texto_derrota = fonte.render("GAME OVER", True, (255, 0, 111))
 texto_vitoria = fonte.render("VICTORY", True, (0, 255, 204))
 fonte_titulo = pygame.font.Font(None, 80)
 texto_titulo = fonte_titulo.render("BOBCleyton O Eletricista", True, (255, 255, 0))
-botao_jogar = pygame.Rect(285, 277, 230, 60)
+botao_jogar = pygame.Rect(290, 280, 220, 50)
+
+fonte_botoes = pygame.font.Font(None, 50)
+texto_jogar = fonte_titulo.render('JOGAR', True, (255, 255, 255))
 
 
 estado = 'menu'
@@ -37,7 +40,8 @@ while rodando:    #loop para manter o jogo rodando
     if estado == "menu":
         tela.blit(img_menu, (0, 0))
         tela.blit(texto_titulo, ((800 - texto_titulo.get_width()) / 2, 60))
-        pygame.draw.rect(tela, (255, 255, 255), botao_jogar)
+        pygame.draw.rect(tela, (255, 212, 20), botao_jogar)
+        tela.blit(texto_jogar, (botao_jogar.x + (botao_jogar.width - texto_jogar.get_width()) / 2, botao_jogar.y + (botao_jogar.height - texto_jogar.get_height()) / 2 + 5))
         
     for evento in pygame.event.get():    #aqui guarda tudo que o usuário fizer dentro do jogo
         if evento.type == pygame.QUIT:    #mostra qual o tipo do evento acontecido (que é o de sair do jogo)
