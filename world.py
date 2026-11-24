@@ -8,12 +8,16 @@ class Gerador:
         self.altura = altura
         self.progresso = 0
         self.consertado = False
+        self.img_quebrado = pygame.image.load("gerador_ruim.png").convert_alpha()
+        self.img_quebrado = pygame.transform.scale(self.img_quebrado, (self.largura, self.altura))
+        self.img_ligado = pygame.image.load("gerador_bom.png").convert_alpha()
+        self.img_ligado = pygame.transform.scale(self.img_ligado, (self.largura, self.altura))
 
     def desenhar(self, tela):
         if self.consertado:
-            pygame.draw.rect(tela, (0, 255, 0), (self.x, self.y, self.largura, self.altura))
+            tela.blit(self.img_ligado, (self.x, self.y))
         else:
-            pygame.draw.rect(tela, (255, 255, 0), (self.x, self.y, self.largura, self.altura))
+            tela.blit(self.img_quebrado, (self.x, self.y))
 
 
     def consertar(self, teclas):
